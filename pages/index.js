@@ -1,50 +1,33 @@
-import Link from 'next/link'
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Image from 'next/image'
+import Head from 'next/head'
 import SanityClient from '../client'
+import Navbar from '../components/navbar';
+import Footer from '../components/Footer';
+import JobList from '../components/JobList'
+
+
 
 const Home = ({ jobs }) => {
-  console.log(jobs)
   return (
     <>
-
-      {jobs && jobs.map(job => (
-
-        <Link href={`jobs/${job.slug.current}`} key={job._id}>
-          <Card>
-            <CardActionArea>
-              {/* <CardMedia
-    component="img"
-    alt="Contemplative Reptile"
-    height="140"
-    image={job.mainImage.asset?._ref}
-  /> */}
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {job.title}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  this is description
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Link>
-      ))}
-
+      <Head>
+        <title>Home page</title>
+        <meta name="viewport" content="JOb content, application" />
+      </Head>
+      <JobList jobs={jobs} />
     </>
   );
 }
 
 export const getServerSideProps = async () => {
-  const query = '*[ _type == "post"]'
+  const query = `*[_type=="post"] {
+    title,slug,description[0],publishedAt,place,
+    mainImage{
+      asset->{
+        _id,url
+      },
+      alt
+    }
+  }`
   const jobs = await SanityClient.fetch(query)
 
   if (!jobs.length) {
