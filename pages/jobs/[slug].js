@@ -10,16 +10,24 @@ import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles({
     root: {
-      padding: '70px 0'
+      padding: '70px 0',
+      margin: '100px 0'
     },
     card: {
       backgroundColor: '#24DC9A',
       color: "white",
       padding:'70px'
     },
+    title: {
+      color: 'red',
+      fontWeight: '700'
+    },
     back: {
         color: 'red',
-        textDecoration: 'underline'
+        padding: '20px 0',
+        fontSize: '25px',
+        textDecoration: 'underline',
+        cursor: 'pointer'
     }
   })
 
@@ -28,12 +36,12 @@ const individualJob = ({ title,
     const classes = useStyles()
     return (
         <>
-            <main>
+            <main className={classes.root}>
                 <Container>
                 <Card className={classes.card}>
                       <CardActionArea>
                         <CardContent>
-                          <Typography gutterBottom variant="h5" >
+                          <Typography gutterBottom variant="h5" className={classes.title} >
                             {title}
                           </Typography>
                           <Typography gutterBottom variant="subtitle2" >
@@ -49,20 +57,20 @@ const individualJob = ({ title,
         </>
     );
 }
-export const getServerSideProps = async (pageContext) => {
-    const pageSlug = pageContext.query.slug
+export const getServerSideProps = async (jobContext) => {
+    const jobSlug = jobContext.query.slug
 
-    const query = `*[ _type == "post" && slug.current == $pageSlug][0]{
+    const query = `*[ _type == "post" && slug.current == $jobSlug][0]{
         title,
         mainImage,
         id,
         description
     }`
 
-    const property = await SanityClient.fetch(query, { pageSlug })
+    const job = await SanityClient.fetch(query, { jobSlug })
 
 
-    if (!property) {
+    if (!job) {
         return {
             props: null,
             notFound: true,
@@ -70,10 +78,10 @@ export const getServerSideProps = async (pageContext) => {
     } else {
         return {
             props: {
-                title: property.title,
-                mainImage: property.mainImage,
-                id: property.id,
-                description: property.description
+                title: job.title,
+                mainImage: job.mainImage,
+                id: job.id,
+                description: job.description
             },
         }
     }

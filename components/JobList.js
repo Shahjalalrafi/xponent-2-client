@@ -10,7 +10,8 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
     root: {
-      padding: '70px 0'
+      padding: '70px 0',
+      margin: '0 0 180px 0'
     },
     card: {
       backgroundColor: '#24DC9A',
