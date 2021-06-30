@@ -1,4 +1,4 @@
-    this is my sanity dashboard.where i an post any of my job post that will show in our website.
+    this is my sanity dashboard.where i can post any of my job post that will show in our website.
 ![image](https://user-images.githubusercontent.com/69204772/123906514-22f90900-d996-11eb-9946-6b497afcd67d.png)
 
 
